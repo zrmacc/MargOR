@@ -1,12 +1,3 @@
----
-title: "README"
-author: "Zachary McCaw"
-date: "2020-10-18"
-output: 
-  html_document: 
-    keep_md: TRUE
---- 
-
 
 
 Zachary McCaw <br>
