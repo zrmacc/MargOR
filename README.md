@@ -41,7 +41,7 @@ show(or_analysis)
 ```
 
 ```
-## Rates:
+## Marginal Rates:
 ##   Arm    N      Rate
 ## 1   0 4321 0.2567286
 ## 2   1 2104 0.2292085

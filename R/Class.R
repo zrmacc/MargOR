@@ -31,7 +31,7 @@ setClass(
 print.margOR <- function (x, ...) {
   
   # Rates
-  cat('Rates:\n')
+  cat('Marginal Rates:\n')
   show(x@Rates)
   cat('\n\n')
   
