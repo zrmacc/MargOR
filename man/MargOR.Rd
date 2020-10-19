@@ -4,7 +4,7 @@
 \alias{MargOR}
 \title{Estimate the Marginal Odds Ratio.}
 \usage{
-MargOR(y0, n0, y1, n1, alpha, reps = 2000)
+MargOR(y0, n0, y1, n1, alpha = 0.05, reps = 2000)
 }
 \arguments{
 \item{y0}{Events per category in arm 0.}

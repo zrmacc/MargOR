@@ -1,3 +1,13 @@
+---
+title: "README"
+author: "Zachary McCaw"
+date: "2020-10-18"
+output: 
+  html_document: 
+    keep_md: TRUE
+--- 
+
+
 
 Zachary McCaw <br>
 Updated: 2020-10-18
@@ -27,6 +37,7 @@ n1 <- c(324, 1279, 501)
 
 # Marginal Odds Ratio
 library(MargOR)
+set.seed(2013)
 or_analysis <- MargOR(
   y0 = y0,
   n0 = n0,
@@ -47,8 +58,8 @@ show(or_analysis)
 ## 
 ## CIs:
 ##       Method        OR         SE     Lower     Upper          P
-## 1 Asymptotic 0.8609283 0.06247420 0.7617086 0.9730723 0.01653468
-## 2  Bootstrap 0.8609283 0.05359839 0.7558490 0.9719938 0.01199400
+## 1 Asymptotic 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
+## 2  Bootstrap 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
 ```
 
 The results of a Mantel-Haenszel test are similar:

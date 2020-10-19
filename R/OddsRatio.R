@@ -46,7 +46,7 @@ MargRate <- function(y0, n0, y1, n1) {
 #' @return Data.frame containing:
 #' \itemize{
 #'   \item The odds ratio 'OR'.
-#'   \item The standard error 'SE' of the *log* OR.
+#'   \item The standard error 'SE'. 
 #'   \item The 'Lower' and 'Upper' confidence bound.
 #'   \item The asymptotic 'P' value.
 #' }
@@ -74,7 +74,7 @@ OddsRatio <- function(p0, n0, p1, n1, alpha = 0.05) {
   # Output
   out <- data.frame(
     "OR" = odds_ratio,
-    "SE" = se,
+    "SE" = se * odds_ratio,
     "Lower" = lower,
     "Upper" = upper,
     "P" = p_val
@@ -240,7 +240,7 @@ MargOR <- function(
   n0, 
   y1, 
   n1, 
-  alpha,
+  alpha = 0.05,
   reps = 2e3
   ) {
   

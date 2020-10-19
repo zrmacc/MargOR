@@ -34,7 +34,6 @@ devtools::install_github(repo = 'zrmacc/MargOR')
 Consider the following 28-day unadjusted mortality data from a recent [COVID-19 clinical trial](https://www.nejm.org/doi/full/10.1056/NEJMoa2021436), stratified by respiratory support at ranomization. The marginal odds ratio, comparing dexamethasone with usual care, is 0.861. 
 
 ```{r}
-
 # Event counts.
 y0 <- c(283, 682, 145)
 n0 <- c(683, 2604, 1034)
@@ -43,6 +42,7 @@ n1 <- c(324, 1279, 501)
 
 # Marginal Odds Ratio
 library(MargOR)
+set.seed(2013)
 or_analysis <- MargOR(
   y0 = y0,
   n0 = n0,

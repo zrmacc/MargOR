@@ -21,7 +21,7 @@ OddsRatio(p0, n0, p1, n1, alpha = 0.05)
 Data.frame containing:
 \itemize{
   \item The odds ratio 'OR'.
-  \item The standard error 'SE' of the *log* OR.
+  \item The standard error 'SE'. 
   \item The 'Lower' and 'Upper' confidence bound.
   \item The asymptotic 'P' value.
 }
