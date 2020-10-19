@@ -1,3 +1,4 @@
+
 Zachary McCaw <br>
 Updated: 2020-10-18
 
@@ -9,7 +10,7 @@ Given stratified event-count data for two arms, this package calculates the marg
 
 
 ```r
-devtools::install_github(repo = 'zrmacc/MCC')
+devtools::install_github(repo = 'zrmacc/MargOR')
 ```
 
 ## Example
@@ -47,7 +48,7 @@ show(or_analysis)
 ## CIs:
 ##       Method        OR         SE     Lower     Upper          P
 ## 1 Asymptotic 0.8609283 0.06247420 0.7617086 0.9730723 0.01653468
-## 2  Bootstrap 0.8609283 0.05353668 0.7648350 0.9720767 0.01799100
+## 2  Bootstrap 0.8609283 0.05359839 0.7558490 0.9719938 0.01199400
 ```
 
 The results of a Mantel-Haenszel test are similar:
