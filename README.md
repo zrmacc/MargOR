@@ -1,22 +1,20 @@
-
-
 Zachary McCaw <br>
-Updated: 2020-10-18
+Updated: 2020-10-19
 
 ## Overview
 
-Given stratified event-count data for two arms, this package calculates the marginal odds ratio of [Tian et al. (2009)](https://doi.org/10.1093/biostatistics/kxn034), and constructs the asymptotic and bootstrap confidence intervals. In contrast to the Mantel-Haenszel approach for combining odds ratios across strata, the present approach is to first calculate the marginal events in each arm by taking a stratum-size weighted average of the per-stratum event rates, then form the odds ratio. 
+Given stratified event-count data for two arms, this package calculates summary statistics comparing two arms with respect to the marginal event rate. Marginal event rates are calculated as the stratum-sized weighted-average of the per-stratum event rates, then compared via the risk difference, risk ratio, and odds ratio.
 
 ## Installation
 
 
 ```r
-devtools::install_github(repo = 'zrmacc/MargOR')
+devtools::install_github(repo = 'zrmacc/MargRates')
 ```
 
 ## Example
 
-Consider the following 28-day unadjusted mortality data from a recent [COVID-19 clinical trial](https://www.nejm.org/doi/full/10.1056/NEJMoa2021436), stratified by respiratory support at ranomization. The marginal odds ratio, comparing dexamethasone with usual care, is 0.861. 
+Consider the following 28-day unadjusted mortality data from a recent [COVID-19 clinical trial](https://www.nejm.org/doi/full/10.1056/NEJMoa2021436), stratified by respiratory support at randomization
 
 
 ```r
@@ -27,9 +25,9 @@ y1 <- c(95, 298, 89)
 n1 <- c(324, 1279, 501)
 
 # Marginal Odds Ratio
-library(MargOR)
+library(MargRates)
 set.seed(2013)
-or_analysis <- MargOR(
+out <- CompMargRates(
   y0 = y0,
   n0 = n0,
   y1 = y1,
@@ -37,7 +35,7 @@ or_analysis <- MargOR(
   alpha = 0.05,
   reps = 2e3
 )
-show(or_analysis)
+show(out)
 ```
 
 ```
@@ -47,40 +45,20 @@ show(or_analysis)
 ## 2   1 2104 0.2292085
 ## 
 ## 
-## CIs:
-##       Method        OR         SE     Lower     Upper          P
-## 1 Asymptotic 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
-## 2  Bootstrap 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
-```
-
-The results of a Mantel-Haenszel test are similar:
-
-
-```r
-library(abind)
-# Formatting data.
-z0 <- n0 - y0
-z1 <- n1 - y1
-
-ctrl <- rbind(z0, y0)
-trt <- rbind(z1, y1)
-
-data <- abind(ctrl, trt, along = 0)
-mantelhaen.test(data)
-```
-
-```
+## Risk Difference:
+##       Method     Stat        Est         SE       Lower        Upper          P
+## 1 Asymptotic RiskDiff -0.0275201 0.01131947 -0.04970586 -0.005334347 0.01504816
+## 4  Bootstrap RiskDiff -0.0275201 0.01123516 -0.04957270 -0.005407053 0.01799100
 ## 
-## 	Mantel-Haenszel chi-squared test with continuity correction
 ## 
-## data:  data
-## Mantel-Haenszel X-squared = 5.7032, df = 1, p-value = 0.01693
-## alternative hypothesis: true common odds ratio is not equal to 1
-## 95 percent confidence interval:
-##  0.7594595 0.9721183
-## sample estimates:
-## common odds ratio 
-##         0.8592349
+## Risk Ratio:
+##       Method      Stat       Est         SE     Lower     Upper          P
+## 2 Asymptotic RiskRatio 0.8928047 0.04252159 0.8132355 0.9801592 0.01727794
+## 5  Bootstrap RiskRatio 0.8928047 0.04233066 0.8123457 0.9782870 0.01799100
+## 
+## 
+## Odds Ratio:
+##       Method      Stat       Est         SE     Lower     Upper          P
+## 3 Asymptotic OddsRatio 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
+## 6  Bootstrap OddsRatio 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
 ```
-
-

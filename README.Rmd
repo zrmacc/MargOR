@@ -17,21 +17,21 @@ knitr::opts_chunk$set(
 ```
 
 Zachary McCaw <br>
-Updated: 2020-10-18
+Updated: 2020-10-19
 
 ## Overview
 
-Given stratified event-count data for two arms, this package calculates the marginal odds ratio of [Tian et al. (2009)](https://doi.org/10.1093/biostatistics/kxn034), and constructs the asymptotic and bootstrap confidence intervals. In contrast to the Mantel-Haenszel approach for combining odds ratios across strata, the present approach is to first calculate the marginal events in each arm by taking a stratum-size weighted average of the per-stratum event rates, then form the odds ratio. 
+Given stratified event-count data for two arms, this package calculates summary statistics comparing two arms with respect to the marginal event rate. Marginal event rates are calculated as the stratum-sized weighted-average of the per-stratum event rates, then compared via the risk difference, risk ratio, and odds ratio.
 
 ## Installation
 
 ```{r, eval=FALSE}
-devtools::install_github(repo = 'zrmacc/MargOR')
+devtools::install_github(repo = 'zrmacc/MargRates')
 ```
 
 ## Example
 
-Consider the following 28-day unadjusted mortality data from a recent [COVID-19 clinical trial](https://www.nejm.org/doi/full/10.1056/NEJMoa2021436), stratified by respiratory support at ranomization. The marginal odds ratio, comparing dexamethasone with usual care, is 0.861. 
+Consider the following 28-day unadjusted mortality data from a recent [COVID-19 clinical trial](https://www.nejm.org/doi/full/10.1056/NEJMoa2021436), stratified by respiratory support at randomization
 
 ```{r}
 # Event counts.
@@ -41,9 +41,9 @@ y1 <- c(95, 298, 89)
 n1 <- c(324, 1279, 501)
 
 # Marginal Odds Ratio
-library(MargOR)
+library(MargRates)
 set.seed(2013)
-or_analysis <- MargOR(
+out <- CompMargRates(
   y0 = y0,
   n0 = n0,
   y1 = y1,
@@ -51,24 +51,6 @@ or_analysis <- MargOR(
   alpha = 0.05,
   reps = 2e3
 )
-show(or_analysis)
+show(out)
 
 ```
-
-The results of a Mantel-Haenszel test are similar:
-
-```{r}
-library(abind)
-# Formatting data.
-z0 <- n0 - y0
-z1 <- n1 - y1
-
-ctrl <- rbind(z0, y0)
-trt <- rbind(z1, y1)
-
-data <- abind(ctrl, trt, along = 0)
-mantelhaen.test(data)
-
-```
-
-
