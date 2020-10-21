@@ -4,6 +4,7 @@
 #' @slot RD Risk difference.
 #' @slot RR Risk ratio.
 #' @slot OR Odds ratio.
+#' @slot Perm Permutation test.
 #' @name margRates-class
 #' @rdname margRates-class
 #' @exportClass margRates
@@ -14,7 +15,8 @@ setClass(
    Rates = "data.frame",
    RD = "data.frame",
    RR = "data.frame",
-   OR = "data.frame"
+   OR = "data.frame",
+   Perm = "data.frame"
   )
 )
 
@@ -51,6 +53,14 @@ print.margRates <- function (x, ...) {
   cat('Odds Ratio:\n')
   show(x@OR)
   cat('\n\n')
+  
+  # Permutation.
+  if (nrow(x@Perm) > 0) {
+    cat('Permutation test:\n')
+    show(x@Perm)
+    cat('\n\n')
+  }
+  
 }
 
 # -----------------------------------------------------------------------------

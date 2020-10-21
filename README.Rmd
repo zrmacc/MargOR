@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 Zachary McCaw <br>
-Updated: 2020-10-19
+Updated: 2020-10-20
 
 ## Overview
 
@@ -49,6 +49,8 @@ out <- CompMargRates(
   y1 = y1,
   n1 = n1,
   alpha = 0.05,
+  boot = TRUE,
+  perm = TRUE,
   reps = 2e3
 )
 show(out)

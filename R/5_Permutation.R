@@ -1,7 +1,8 @@
-#' Bootstrap Events
+#' Bootstrap Events under the Null
 #'
 #' Bootstrap the number of events observed in each cell of a contingency table,
-#' keeping the number of subjects in each cell fixed.
+#' keeping the number of subjects in each cell fixed, and assuming no difference
+#' between treatment arms.
 #'
 #' @param y0 Events per category in arm 0.
 #' @param n0 Subjects per category in arm 0.
@@ -10,14 +11,14 @@
 #' @importFrom stats rbinom
 #' @return List containing the bootstrapped event counts.
 
-BootEvents <- function(y0, n0, y1, n1) {
+BootEventsNull <- function(y0, n0, y1, n1) {
   
   # Categories.
   k <- length(n0)
   
   # Event rates. 
   n <- c(n0, n1)
-  rates <- c(y0 / n0, y1 / n1)
+  rates <- rep((y0 + y1) / (n0 + n1), times = 2)
   cells <- length(rates)
   
   # Bootstrap counts.
@@ -39,7 +40,7 @@ BootEvents <- function(y0, n0, y1, n1) {
 
 # -----------------------------------------------------------------------------
 
-#' Bootstrap Summary Statistics.
+#' Test the Null Hypothesis via Bootstrap
 #' 
 #' @param y0 Events per category in arm 0.
 #' @param n0 Subjects per category in arm 0.
@@ -50,7 +51,7 @@ BootEvents <- function(y0, n0, y1, n1) {
 #' @importFrom stats quantile sd
 #' @return Data.frame containing:
 
-Stats.Boot <- function(
+Test.Null <- function(
   y0,
   n0, 
   y1, 
@@ -76,7 +77,7 @@ Stats.Boot <- function(
   aux <- function(b) {
     
     # Bootstrap data.
-    boot_data <- BootEvents(y0 = y0, n0 = n0, y1 = y1, n1 = n1)
+    boot_data <- BootEventsNull(y0 = y0, n0 = n0, y1 = y1, n1 = n1)
     
     # Marginal odds ratio.
     boot <- CalcMargStats(
@@ -92,39 +93,18 @@ Stats.Boot <- function(
     
     # Output
     out <- c(
-      "RD" = boot_rd,
-      "RR" = boot_rr,
-      "OR" = boot_or,
-      "P" = 1 * (sign(obs_rd) != sign(boot_rd))
+      "RD_P" = (abs(boot_rd) >= abs(obs_rd)),
+      "RR_P" = (abs(log(boot_rr)) >= abs(log(obs_rr))),
+      "OR_P" = (abs(log(boot_or)) >= abs(log(obs_or)))
     )
     return(out)
   }
   sim <- lapply(seq_len(reps), aux)
   sim <- do.call(rbind, sim)
-  
-  # CI.
-  alpha2 = alpha / 2
-  cis <- lapply(seq_len(3), function(x) {
-    int <- quantile(sim[, x], probs = c(alpha2, 1 - alpha2), na.rm = TRUE)
-    return(as.numeric(int))
-  })
-  cis <- do.call(rbind, cis)
-  colnames(cis) <- c("Lower", "Upper")
-  
-  # SEs.
-  ses <- lapply(seq_len(3), function(x) {
-    int <- sd(sim[, x], na.rm = TRUE)
-    return(as.numeric(int))
-  })
-  ses <- do.call(c, ses)
-  
-  # P-value.
-  p_val <- min(2 * mean(c(1, sim[, 4])), 1)
+  sim <- rbind(c(1, 1, 1), sim)
   
   # Output
   out <- obs_stats[, 1:2]
-  out$SE <- ses
-  out <- cbind(out, cis)
-  out$P <- p_val
+  out$P <- apply(sim, 2, mean)
   return(out)
 }

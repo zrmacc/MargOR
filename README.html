@@ -11,7 +11,7 @@
 
 <meta name="author" content="Zachary McCaw" />
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-10-20" />
 
 <title>README</title>
 
@@ -365,12 +365,12 @@ summary {
 
 <h1 class="title toc-ignore">README</h1>
 <h4 class="author">Zachary McCaw</h4>
-<h4 class="date">2020-10-19</h4>
+<h4 class="date">2020-10-20</h4>
 
 </div>
 
 
-<p>Zachary McCaw <br> Updated: 2020-10-18</p>
+<p>Zachary McCaw <br> Updated: 2020-10-20</p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>Given stratified event-count data for two arms, this package calculates summary statistics comparing two arms with respect to the marginal event rate. Marginal event rates are calculated as the stratum-sized weighted-average of the per-stratum event rates, then compared via the risk difference, risk ratio, and odds ratio.</p>
@@ -397,6 +397,8 @@ out &lt;- CompMargRates(
   y1 = y1,
   n1 = n1,
   alpha = 0.05,
+  boot = TRUE,
+  perm = TRUE,
   reps = 2e3
 )
 show(out)</code></pre>
@@ -421,7 +423,14 @@ show(out)</code></pre>
 ## Odds Ratio:
 ##       Method      Stat       Est         SE     Lower     Upper          P
 ## 3 Asymptotic OddsRatio 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
-## 6  Bootstrap OddsRatio 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100</code></pre>
+## 6  Bootstrap OddsRatio 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
+## 
+## 
+## Permutation test:
+##        Stat        Est          P
+## 1  RiskDiff -0.0275201 0.02148926
+## 2 RiskRatio  0.8928047 0.01799100
+## 3 OddsRatio  0.8609283 0.01849075</code></pre>
 </div>
 
 

@@ -1,5 +1,16 @@
+---
+title: "README"
+author: "Zachary McCaw"
+date: "2020-10-20"
+output: 
+  html_document: 
+    keep_md: TRUE
+--- 
+
+
+
 Zachary McCaw <br>
-Updated: 2020-10-19
+Updated: 2020-10-20
 
 ## Overview
 
@@ -33,6 +44,8 @@ out <- CompMargRates(
   y1 = y1,
   n1 = n1,
   alpha = 0.05,
+  boot = TRUE,
+  perm = TRUE,
   reps = 2e3
 )
 show(out)
@@ -61,4 +74,11 @@ show(out)
 ##       Method      Stat       Est         SE     Lower     Upper          P
 ## 3 Asymptotic OddsRatio 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
 ## 6  Bootstrap OddsRatio 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
+## 
+## 
+## Permutation test:
+##        Stat        Est          P
+## 1  RiskDiff -0.0275201 0.02148926
+## 2 RiskRatio  0.8928047 0.01799100
+## 3 OddsRatio  0.8609283 0.01849075
 ```

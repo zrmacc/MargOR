@@ -8,7 +8,9 @@
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
 #' @param alpha Type I error. 
-#' @param reps Bootstrap replicates.
+#' @param boot Calculate bootstrap confidence intervals? 
+#' @param perm Perform a permutation-type test of the null?
+#' @param reps Replicates for bootstrap/permutation.
 #' @importFrom methods new
 #' @export
 #' @return Object of class `margRates` containing these slots:
@@ -25,6 +27,8 @@ CompMargRates <- function(
   y1, 
   n1, 
   alpha = 0.05,
+  boot = FALSE,
+  perm = FALSE,
   reps = 2e3
 ) {
   
@@ -43,15 +47,33 @@ CompMargRates <- function(
   stats_asymp$Method <- "Asymptotic"
   
   # Bootstrap inference.
-  stats_boot <- Stats.Boot(
-    y0 = y0,
-    n0 = n0,
-    y1 = y1,
-    n1 = n1,
-    alpha = alpha,
-    reps = reps
-  )
-  stats_boot$Method <- "Bootstrap"
+  if (boot) {
+    stats_boot <- Stats.Boot(
+      y0 = y0,
+      n0 = n0,
+      y1 = y1,
+      n1 = n1,
+      alpha = alpha,
+      reps = reps
+    )
+    stats_boot$Method <- "Bootstrap"
+  } else {
+    stats_boot <- NULL
+  }
+  
+  # Permutation inference.
+  if (perm) {
+    perm_test <- Test.Null(
+      y0 = y0,
+      n0 = n0,
+      y1 = y1,
+      n1 = n1,
+      alpha = alpha,
+      reps = reps
+    )
+  } else {
+    perm_test <- data.frame()
+  }
   
   # Output.
   out <- rbind(stats_asymp, stats_boot)
@@ -61,7 +83,8 @@ CompMargRates <- function(
     Rates = rates,
     RD = out[out$Stat == "RiskDiff", ],
     RR = out[out$Stat == "RiskRatio", ],
-    OR = out[out$Stat == "OddsRatio", ]
+    OR = out[out$Stat == "OddsRatio", ],
+    Perm = perm_test
   )
   return(out)
 }

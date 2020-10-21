@@ -17,5 +17,7 @@ Marginal event rates object.
 \item{\code{RR}}{Risk ratio.}
 
 \item{\code{OR}}{Odds ratio.}
+
+\item{\code{Perm}}{Permutation test.}
 }}
 
