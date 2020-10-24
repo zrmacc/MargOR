@@ -12,7 +12,8 @@ CompMargRates(
   alpha = 0.05,
   boot = FALSE,
   perm = FALSE,
-  reps = 2000
+  reps = 2000,
+  exclude_double_zero = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ CompMargRates(
 \item{perm}{Perform a permutation-type test of the null?}
 
 \item{reps}{Replicates for bootstrap/permutation.}
+
+\item{exclude_double_zero}{Exclude strata with no events in either arm?}
 }
 \value{
 Object of class `margRates` containing these slots:

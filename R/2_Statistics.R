@@ -1,9 +1,9 @@
 #' Asymptotic Risk Difference
 #' 
-#' @param p0 Marginal proportion in arm 0.
-#' @param n0 Sample size in arm 0.
-#' @param p1 Marginal proportion in arm 1.
-#' @param n1 Sample size in arm 1.
+#' @param y0 Events per category in arm 0.
+#' @param n0 Subjects per category in arm 0.
+#' @param y1 Events per category in arm 1.
+#' @param n1 Subjects per category in arm 1.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
 #' @return Data.frame containing:
@@ -14,13 +14,21 @@
 #'   \item The asymptotic 'P' value.
 #' }
 
-RiskDiff <- function(p0, n0, p1, n1, alpha = 0.05) {
+RiskDiff <- function(y0, n0, y1, n1, alpha = 0.05) {
+  
+  # Marginal rates.
+  marg <- MargRate(y0, n0, y1, n1)
+  p0 <- marg$p0
+  r0 <- marg$r0
+  p1 <- marg$p1
+  r1 <- marg$r1
+  weights <- marg$weights
   
   # Risk Difference.
   risk_diff <- p1 - p0
   
   # Sampling variance of the risk difference.
-  v <- p1 * (1 - p1) / n1 + p0 * (1 - p0) / n0
+  v <- sum(r1 * (1 - r1) / n1 * weights^2) + sum(r0 * (1 - r0) / n0 * weights^2)
   se <- sqrt(v)
   
   # Z-score and p-value.
@@ -49,10 +57,10 @@ RiskDiff <- function(p0, n0, p1, n1, alpha = 0.05) {
 
 #' Asymptotic Risk Difference
 #' 
-#' @param p0 Marginal proportion in arm 0.
-#' @param n0 Sample size in arm 0.
-#' @param p1 Marginal proportion in arm 1.
-#' @param n1 Sample size in arm 1.
+#' @param y0 Events per category in arm 0.
+#' @param n0 Subjects per category in arm 0.
+#' @param y1 Events per category in arm 1.
+#' @param n1 Subjects per category in arm 1.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
 #' @return Data.frame containing:
@@ -63,13 +71,22 @@ RiskDiff <- function(p0, n0, p1, n1, alpha = 0.05) {
 #'   \item The asymptotic 'P' value.
 #' }
 
-RiskRatio <- function(p0, n0, p1, n1, alpha = 0.05) {
+RiskRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
+  
+  # Marginal rates.
+  marg <- MargRate(y0, n0, y1, n1)
+  p0 <- marg$p0
+  r0 <- marg$r0
+  p1 <- marg$p1
+  r1 <- marg$r1
+  weights <- marg$weights
   
   # Risk Difference.
   risk_ratio <- p1 / p0
   
   # Sampling variance of log risk ratio.
-  v <- (1 - p1) / (p1 * n1) + (1 - p0) / (p0 * n0)
+  v <- sum(r1 * (1 - r1) / n1 * weights^2) / p1^2 +
+    sum(r0 * (1 - r0) / n0 * weights^2) / p0^2
   se <- sqrt(v)
   
   # Z-score and p-value.
@@ -98,10 +115,10 @@ RiskRatio <- function(p0, n0, p1, n1, alpha = 0.05) {
 
 #' Asymptotic Odds Ratio
 #' 
-#' @param p0 Proportion in arm 0.
-#' @param n0 Sample size in arm 0.
-#' @param p1 Proportion in arm 1.
-#' @param n1 Sample size in arm 1.
+#' @param y0 Events per category in arm 0.
+#' @param n0 Subjects per category in arm 0.
+#' @param y1 Events per category in arm 1.
+#' @param n1 Subjects per category in arm 1.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
 #' @return Data.frame containing:
@@ -112,15 +129,22 @@ RiskRatio <- function(p0, n0, p1, n1, alpha = 0.05) {
 #'   \item The asymptotic 'P' value.
 #' }
 
-OddsRatio <- function(p0, n0, p1, n1, alpha = 0.05) {
+OddsRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
   
-  # Odds ratio.
-  odds_0 <- p0 / (1 - p0)
-  odds_1 <- p1 / (1 - p1)
-  odds_ratio <- odds_1 / odds_0
+  # Marginal rates.
+  marg <- MargRate(y0, n0, y1, n1)
+  p0 <- marg$p0
+  r0 <- marg$r0
+  p1 <- marg$p1
+  r1 <- marg$r1
+  weights <- marg$weights
+  
+  # Marginal odds ratio.
+  odds_ratio <- p1 / (1 - p1) / (p0 / (1 - p0))
   
   # Sampling variance of log odds ratio.
-  v <- 1 / (n1 * p1 * (1 - p1))  + 1 / (n0 * p0 * (1 - p0))
+  v <- sum(r1 * (1 - r1) / n1 * weights^2) / (p1 * (1 - p1))^2 +
+    sum(r0 * (1 - r0) / n0 * weights^2) / (p0 * (1 - p0))^2
   se <- sqrt(v)
   
   # Z-score and p-value.

@@ -9,27 +9,34 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
-#' @return Data.frame containing the 'Arm', 'N', and the marginal 'Rate'.
+#' @return List containing:
+#' \itemize{
+#'   \item Marginal rates in each arm, `p0` and `p1`
+#'   \item Per-stratum weights, `r0` and `r1`.
+#'   \item Stratum `weights`.
+#' }
 
 MargRate <- function(y0, n0, y1, n1) {
   
   # Stratum proportions.
   n <- sum(n0 + n1)
-  strat_props <- (n0 + n1) / n
+  weights <- (n0 + n1) / n
   
   # Stratum specific event rates.
   r0 <- y0 / n0
   r1 <- y1 / n1
   
   # Marginal rates.
-  p0 <- sum(r0 * strat_props)
-  p1 <- sum(r1 * strat_props)
+  p0 <- sum(r0 * weights)
+  p1 <- sum(r1 * weights)
   
   # Output.
-  out <- data.frame(
-    "Arm" = c(0, 1),
-    "N" = c(sum(n0), sum(n1)),
-    "Rate" = c(p0, p1)
+  out <- list(
+    "p0" = p0,
+    "p1" = p1,
+    "r0" = r0,
+    "r1" = r1,
+    "weights" = weights
   )
   return(out)
 }

@@ -1,6 +1,6 @@
-#' Bootstrap Events under the Null
+#' Permute Events
 #'
-#' Bootstrap the number of events observed in each cell of a contingency table,
+#' Permute the number of events observed in each cell of a contingency table,
 #' keeping the number of subjects in each cell fixed, and assuming no difference
 #' between treatment arms.
 #'
@@ -8,46 +8,51 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
-#' @importFrom stats rbinom
-#' @return List containing the bootstrapped event counts.
+#' @importFrom stats rhyper
+#' @return List containing the data after permutation.
 
-BootEventsNull <- function(y0, n0, y1, n1) {
+PermEvents <- function(y0, n0, y1, n1) {
   
-  # Categories.
-  k <- length(n0)
+  # Number of strata.
+  k <- length(y0)
   
-  # Event rates. 
-  n <- c(n0, n1)
-  rates <- rep((y0 + y1) / (n0 + n1), times = 2)
-  cells <- length(rates)
+  # Event and patient totals.
+  yt <- y0 + y1
+  nt <- n0 + n1
   
-  # Bootstrap counts.
-  y_boot <- lapply(
-    seq_len(cells),
-    function(i){
-      rbinom(n = 1, size = n[i], prob = rates[i])
-    }
+  # Draw number of events in arm 0.
+  aux <- function(i) {
+    rhyper(
+      nn = 1,
+      m = yt[i],
+      n = nt[i] - yt[i],
+      k = n0[i]
+    )
+  }
+  
+  y0_perm <- sapply(seq_len(k), aux)
+  y1_perm <- yt - y0_perm
+  
+  out <- list(
+    "y0" = y0_perm,
+    "n0" = n0,
+    "y1" = y1_perm,
+    "n1" = n1
   )
-  y_boot <- do.call(c, y_boot)
-  
-  # Output.
-  out <- list()
-  out$y0 <- y_boot[1:k]
-  out$y1 <- y_boot[(k + 1):(2 * k)]
   return(out)
 }
 
 
 # -----------------------------------------------------------------------------
 
-#' Test the Null Hypothesis via Bootstrap
+#' Test the Null Hypothesis via Permutation
 #' 
 #' @param y0 Events per category in arm 0.
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
 #' @param alpha Type 1 error rate.
-#' @param reps Bootstrap replicates.
+#' @param reps Permutation replicates.
 #' @importFrom stats quantile sd
 #' @return Data.frame containing:
 
@@ -73,29 +78,29 @@ Test.Null <- function(
   obs_rr <- obs_stats$Est[2]
   obs_or <- obs_stats$Est[3]
   
-  # Bootstrap.
+  # Permutation
   aux <- function(b) {
     
-    # Bootstrap data.
-    boot_data <- BootEventsNull(y0 = y0, n0 = n0, y1 = y1, n1 = n1)
+    # Permute data.
+    perm_data <- PermEvents(y0 = y0, n0 = n0, y1 = y1, n1 = n1)
     
     # Marginal odds ratio.
-    boot <- CalcMargStats(
-      y0 = boot_data$y0,
+    perm <- CalcMargStats(
+      y0 = perm_data$y0,
       n0 = n0,
-      y1 = boot_data$y1,
+      y1 = perm_data$y1,
       n1 = n1
     )
-    boot_stats <- boot$Stats
-    boot_rd <- boot_stats$Est[1]
-    boot_rr <- boot_stats$Est[2]
-    boot_or <- boot_stats$Est[3]
+    perm_stats <- perm$Stats
+    perm_rd <- perm_stats$Est[1]
+    perm_rr <- perm_stats$Est[2]
+    perm_or <- perm_stats$Est[3]
     
     # Output
     out <- c(
-      "RD_P" = (abs(boot_rd) >= abs(obs_rd)),
-      "RR_P" = (abs(log(boot_rr)) >= abs(log(obs_rr))),
-      "OR_P" = (abs(log(boot_or)) >= abs(log(obs_or)))
+      "RD_P" = (abs(perm_rd) >= abs(obs_rd)),
+      "RR_P" = (abs(log(perm_rr)) >= abs(log(obs_rr))),
+      "OR_P" = (abs(log(perm_or)) >= abs(log(obs_or)))
     )
     return(out)
   }

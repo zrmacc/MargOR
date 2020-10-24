@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_Permutation.R
 \name{Test.Null}
 \alias{Test.Null}
-\title{Test the Null Hypothesis via Bootstrap}
+\title{Test the Null Hypothesis via Permutation}
 \usage{
 Test.Null(y0, n0, y1, n1, alpha = 0.05, reps)
 }
@@ -17,11 +17,11 @@ Test.Null(y0, n0, y1, n1, alpha = 0.05, reps)
 
 \item{alpha}{Type 1 error rate.}
 
-\item{reps}{Bootstrap replicates.}
+\item{reps}{Permutation replicates.}
 }
 \value{
 Data.frame containing:
 }
 \description{
-Test the Null Hypothesis via Bootstrap
+Test the Null Hypothesis via Permutation
 }

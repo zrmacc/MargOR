@@ -4,16 +4,16 @@
 \alias{RiskDiff}
 \title{Asymptotic Risk Difference}
 \usage{
-RiskDiff(p0, n0, p1, n1, alpha = 0.05)
+RiskDiff(y0, n0, y1, n1, alpha = 0.05)
 }
 \arguments{
-\item{p0}{Marginal proportion in arm 0.}
+\item{y0}{Events per category in arm 0.}
 
-\item{n0}{Sample size in arm 0.}
+\item{n0}{Subjects per category in arm 0.}
 
-\item{p1}{Marginal proportion in arm 1.}
+\item{y1}{Events per category in arm 1.}
 
-\item{n1}{Sample size in arm 1.}
+\item{n1}{Subjects per category in arm 1.}
 
 \item{alpha}{Type 1 error rate.}
 }

@@ -16,7 +16,12 @@ MargRate(y0, n0, y1, n1)
 \item{n1}{Subjects per category in arm 1.}
 }
 \value{
-Data.frame containing the 'Arm', 'N', and the marginal 'Rate'.
+List containing:
+\itemize{
+  \item Marginal rates in each arm, `p0` and `p1`
+  \item Per-stratum weights, `r0` and `r1`.
+  \item Stratum `weights`.
+}
 }
 \description{
 Calculates the marginal event rates in each arm, weighting by the total 

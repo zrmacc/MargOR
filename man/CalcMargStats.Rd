@@ -20,8 +20,8 @@ CalcMargStats(y0, n0, y1, n1, alpha = 0.05)
 \value{
 List containing two data.frames, 
 \itemize{
-  \item 'Rates', returned by \code{\link{MargRate}}.
-  \item 'OR', returned by \code{\link{OddsRatio}}.
+  \item 'Rates', data.frame of marginal rates.
+  \item 'Stats', data.frame of marginal contrasts.
 }
 }
 \description{

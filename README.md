@@ -1,16 +1,5 @@
----
-title: "README"
-author: "Zachary McCaw"
-date: "2020-10-20"
-output: 
-  html_document: 
-    keep_md: TRUE
---- 
-
-
-
 Zachary McCaw <br>
-Updated: 2020-10-20
+Updated: 2020-10-23
 
 ## Overview
 
@@ -53,32 +42,32 @@ show(out)
 
 ```
 ## Marginal Rates:
-##   Arm    N      Rate
+##   Arm    N     Rates
 ## 1   0 4321 0.2567286
 ## 2   1 2104 0.2292085
 ## 
 ## 
 ## Risk Difference:
 ##       Method     Stat        Est         SE       Lower        Upper          P
-## 1 Asymptotic RiskDiff -0.0275201 0.01131947 -0.04970586 -0.005334347 0.01504816
+## 1 Asymptotic RiskDiff -0.0275201 0.01121997 -0.04951084 -0.005529367 0.01417575
 ## 4  Bootstrap RiskDiff -0.0275201 0.01123516 -0.04957270 -0.005407053 0.01799100
 ## 
 ## 
 ## Risk Ratio:
 ##       Method      Stat       Est         SE     Lower     Upper          P
-## 2 Asymptotic RiskRatio 0.8928047 0.04252159 0.8132355 0.9801592 0.01727794
+## 2 Asymptotic RiskRatio 0.8928047 0.04218031 0.8138450 0.9794251 0.01639499
 ## 5  Bootstrap RiskRatio 0.8928047 0.04233066 0.8123457 0.9782870 0.01799100
 ## 
 ## 
 ## Odds Ratio:
 ##       Method      Stat       Est         SE     Lower     Upper          P
-## 3 Asymptotic OddsRatio 0.8609283 0.05378581 0.7617086 0.9730723 0.01653468
+## 3 Asymptotic OddsRatio 0.8609283 0.05334131 0.7624797 0.9720881 0.01565469
 ## 6  Bootstrap OddsRatio 0.8609283 0.05358627 0.7608769 0.9712936 0.01799100
 ## 
 ## 
 ## Permutation test:
 ##        Stat        Est          P
-## 1  RiskDiff -0.0275201 0.02148926
-## 2 RiskRatio  0.8928047 0.01799100
-## 3 OddsRatio  0.8609283 0.01849075
+## 1  RiskDiff -0.0275201 0.01299350
+## 2 RiskRatio  0.8928047 0.01149425
+## 3 OddsRatio  0.8609283 0.01199400
 ```
