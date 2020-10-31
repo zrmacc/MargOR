@@ -45,6 +45,7 @@ BootEvents <- function(y0, n0, y1, n1) {
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type 1 error rate.
 #' @param reps Bootstrap replicates.
 #' @importFrom stats quantile sd
@@ -55,6 +56,7 @@ Stats.Boot <- function(
   n0, 
   y1, 
   n1, 
+  weights = NULL,
   alpha = 0.05,
   reps
 ) {
@@ -65,6 +67,7 @@ Stats.Boot <- function(
     n0 = n0,
     y1 = y1,
     n1 = n1,
+    weights = weights,
     alpha = alpha
   )
   obs_stats <- obs$Stats
@@ -83,7 +86,8 @@ Stats.Boot <- function(
       y0 = boot_data$y0,
       n0 = n0,
       y1 = boot_data$y1,
-      n1 = n1
+      n1 = n1,
+      weights = weights
     )
     boot_stats <- boot$Stats
     boot_rd <- boot_stats$Est[1]

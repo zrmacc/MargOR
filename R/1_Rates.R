@@ -9,6 +9,7 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @return List containing:
 #' \itemize{
 #'   \item Marginal rates in each arm, `p0` and `p1`
@@ -16,11 +17,13 @@
 #'   \item Stratum `weights`.
 #' }
 
-MargRate <- function(y0, n0, y1, n1) {
+MargRate <- function(y0, n0, y1, n1, weights = NULL) {
   
   # Stratum proportions.
   n <- sum(n0 + n1)
-  weights <- (n0 + n1) / n
+  if (is.null(weights)) {
+    weights <- (n0 + n1) / n
+  }
   
   # Stratum specific event rates.
   r0 <- y0 / n0

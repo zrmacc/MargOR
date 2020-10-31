@@ -4,7 +4,7 @@
 \alias{Stats.Boot}
 \title{Bootstrap Summary Statistics.}
 \usage{
-Stats.Boot(y0, n0, y1, n1, alpha = 0.05, reps)
+Stats.Boot(y0, n0, y1, n1, weights = NULL, alpha = 0.05, reps)
 }
 \arguments{
 \item{y0}{Events per category in arm 0.}
@@ -14,6 +14,8 @@ Stats.Boot(y0, n0, y1, n1, alpha = 0.05, reps)
 \item{y1}{Events per category in arm 1.}
 
 \item{n1}{Subjects per category in arm 1.}
+
+\item{weights}{Stratum mixing weights.}
 
 \item{alpha}{Type 1 error rate.}
 

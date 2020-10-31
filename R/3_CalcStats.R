@@ -7,6 +7,7 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type I error. 
 #' @return List containing two data.frames, 
 #' \itemize{
@@ -14,10 +15,10 @@
 #'   \item 'Stats', data.frame of marginal contrasts.
 #' }
 
-CalcMargStats <- function(y0, n0, y1, n1, alpha = 0.05) {
+CalcMargStats <- function(y0, n0, y1, n1, weights = NULL, alpha = 0.05) {
   
   # Marginal rates.
-  marg <- MargRate(y0, n0, y1, n1)
+  marg <- MargRate(y0, n0, y1, n1, weights)
   rates <- data.frame(
     "Arm" = c(0, 1),
     "N" = c(sum(n0), sum(n1)),
@@ -25,13 +26,13 @@ CalcMargStats <- function(y0, n0, y1, n1, alpha = 0.05) {
   )
   
   # Risk difference.
-  rd <- RiskDiff(y0, n0, y1, n1, alpha)
+  rd <- RiskDiff(y0, n0, y1, n1, weights, alpha)
   
   # Risk ratio.
-  rr <- RiskRatio(y0, n0, y1, n1, alpha)
+  rr <- RiskRatio(y0, n0, y1, n1, weights, alpha)
   
   # Odds ratio.
-  or <- OddsRatio(y0, n0, y1, n1, alpha)
+  or <- OddsRatio(y0, n0, y1, n1, weights, alpha)
   
   # Output.
   out <- list()

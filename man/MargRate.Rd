@@ -4,7 +4,7 @@
 \alias{MargRate}
 \title{Marginal Rates}
 \usage{
-MargRate(y0, n0, y1, n1)
+MargRate(y0, n0, y1, n1, weights = NULL)
 }
 \arguments{
 \item{y0}{Events per category in arm 0.}
@@ -14,6 +14,8 @@ MargRate(y0, n0, y1, n1)
 \item{y1}{Events per category in arm 1.}
 
 \item{n1}{Subjects per category in arm 1.}
+
+\item{weights}{Stratum mixing weights.}
 }
 \value{
 List containing:

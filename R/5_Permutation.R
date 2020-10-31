@@ -51,6 +51,7 @@ PermEvents <- function(y0, n0, y1, n1) {
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type 1 error rate.
 #' @param reps Permutation replicates.
 #' @importFrom stats quantile sd
@@ -61,6 +62,7 @@ Test.Null <- function(
   n0, 
   y1, 
   n1, 
+  weights = weights,
   alpha = 0.05,
   reps
 ) {
@@ -71,6 +73,7 @@ Test.Null <- function(
     n0 = n0,
     y1 = y1,
     n1 = n1,
+    weights = weights,
     alpha = alpha
   )
   obs_stats <- obs$Stats
@@ -89,7 +92,8 @@ Test.Null <- function(
       y0 = perm_data$y0,
       n0 = n0,
       y1 = perm_data$y1,
-      n1 = n1
+      n1 = n1,
+      weights = weights
     )
     perm_stats <- perm$Stats
     perm_rd <- perm_stats$Est[1]

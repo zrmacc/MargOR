@@ -4,8 +4,10 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
+#' @export 
 #' @return Data.frame containing:
 #' \itemize{
 #'   \item 'Est', the estimated risk difference, arm 1 minus arm 0.
@@ -14,10 +16,10 @@
 #'   \item The asymptotic 'P' value.
 #' }
 
-RiskDiff <- function(y0, n0, y1, n1, alpha = 0.05) {
+RiskDiff <- function(y0, n0, y1, n1, weights = NULL, alpha = 0.05) {
   
   # Marginal rates.
-  marg <- MargRate(y0, n0, y1, n1)
+  marg <- MargRate(y0, n0, y1, n1, weights)
   p0 <- marg$p0
   r0 <- marg$r0
   p1 <- marg$p1
@@ -61,8 +63,10 @@ RiskDiff <- function(y0, n0, y1, n1, alpha = 0.05) {
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
+#' @export 
 #' @return Data.frame containing:
 #' \itemize{
 #'   \item The odds ratio 'RR', arm 1 over arm 0.
@@ -71,10 +75,10 @@ RiskDiff <- function(y0, n0, y1, n1, alpha = 0.05) {
 #'   \item The asymptotic 'P' value.
 #' }
 
-RiskRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
+RiskRatio <- function(y0, n0, y1, n1, weights = NULL, alpha = 0.05) {
   
   # Marginal rates.
-  marg <- MargRate(y0, n0, y1, n1)
+  marg <- MargRate(y0, n0, y1, n1, weights)
   p0 <- marg$p0
   r0 <- marg$r0
   p1 <- marg$p1
@@ -119,8 +123,10 @@ RiskRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights.
 #' @param alpha Type 1 error rate.
 #' @importFrom stats pnorm qnorm
+#' @export 
 #' @return Data.frame containing:
 #' \itemize{
 #'   \item The odds ratio 'OR'.
@@ -129,10 +135,10 @@ RiskRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
 #'   \item The asymptotic 'P' value.
 #' }
 
-OddsRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
+OddsRatio <- function(y0, n0, y1, n1, weights = NULL, alpha = 0.05) {
   
   # Marginal rates.
-  marg <- MargRate(y0, n0, y1, n1)
+  marg <- MargRate(y0, n0, y1, n1, weights)
   p0 <- marg$p0
   r0 <- marg$r0
   p1 <- marg$p1
@@ -167,7 +173,4 @@ OddsRatio <- function(y0, n0, y1, n1, alpha = 0.05) {
   )
   return(out)
 }
-
-
-# -----------------------------------------------------------------------------
 

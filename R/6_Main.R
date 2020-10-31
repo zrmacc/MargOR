@@ -7,6 +7,8 @@
 #' @param n0 Subjects per category in arm 0.
 #' @param y1 Events per category in arm 1.
 #' @param n1 Subjects per category in arm 1.
+#' @param weights Stratum mixing weights. If omitted, defaults to the 
+#'   stratum proportions.
 #' @param alpha Type I error. 
 #' @param boot Calculate bootstrap confidence intervals? 
 #' @param perm Perform a permutation-type test of the null?
@@ -27,6 +29,7 @@ CompMargRates <- function(
   n0, 
   y1, 
   n1, 
+  weights = NULL,
   alpha = 0.05,
   boot = FALSE,
   perm = FALSE,
@@ -43,12 +46,18 @@ CompMargRates <- function(
     n1 <- n1[!is_double_zero]
   }
   
+  # Weights.
+  if (!is.null(weights)) {
+    weights <- weights / sum(weights)
+  }
+  
   # Asymptotic inference.
   asymp <- CalcMargStats(
     y0 = y0,
     n0 = n0,
     y1 = y1,
     n1 = n1,
+    weights = weights,
     alpha = alpha
   )
   
@@ -64,6 +73,7 @@ CompMargRates <- function(
       n0 = n0,
       y1 = y1,
       n1 = n1,
+      weights = weights,
       alpha = alpha,
       reps = reps
     )
@@ -79,6 +89,7 @@ CompMargRates <- function(
       n0 = n0,
       y1 = y1,
       n1 = n1,
+      weights = weights,
       alpha = alpha,
       reps = reps
     )

@@ -9,6 +9,7 @@ CompMargRates(
   n0,
   y1,
   n1,
+  weights = NULL,
   alpha = 0.05,
   boot = FALSE,
   perm = FALSE,
@@ -24,6 +25,9 @@ CompMargRates(
 \item{y1}{Events per category in arm 1.}
 
 \item{n1}{Subjects per category in arm 1.}
+
+\item{weights}{Stratum mixing weights. If omitted, defaults to the 
+stratum proportions.}
 
 \item{alpha}{Type I error.}
 
