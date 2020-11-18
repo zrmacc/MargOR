@@ -1,9 +1,11 @@
 Zachary McCaw <br>
-Updated: 2020-10-23
+Updated: 2020-10-20
 
 ## Overview
 
-Given stratified event-count data for two arms, this package calculates summary statistics comparing two arms with respect to the marginal event rate. Marginal event rates are calculated as the stratum-sized weighted-average of the per-stratum event rates, then compared via the risk difference, risk ratio, and odds ratio.
+Given stratified binary event data for two arms, this package calculates summary statistics comparing two arms with respect to the marginal event rate. Marginal event rates are calculated as the stratum-size weighted-average of the per-stratum event rates, then compared via the risk difference, risk ratio, and odds ratio. Also see:
+
+* [StratRMST](https://github.com/zrmacc/StratRMST) for comparing restricted mean survival times.
 
 ## Installation
 
